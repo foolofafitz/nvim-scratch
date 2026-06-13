@@ -125,6 +125,10 @@ require("bufferline").setup({
 vim.keymap.set('n', 'H', ':BufferLineCyclePrev<CR>', { silent = true, desc = 'Prev buffer' })
 vim.keymap.set('n', 'L', ':BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
 
+vim.keymap.set('n', '<leader>gg', function()
+    vim.cmd('LazyGit')
+end, { silent = true, desc = 'Open LazyGit' })
+
 -- Create an autocommand group for formatting
 local format_sync_grp = vim.api.nvim_create_augroup("FormatOnSave", {})
 
@@ -178,9 +182,18 @@ vim.opt.completeopt = { "menuone", "noselect", "popup" }
 -- })
 
 -- Global LSP Diagnostics mappings
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to diagnostic error' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to diagnostic error' })
+-- Jump to the NEXT diagnostic
+vim.keymap.set('n', ']d', function()
+    vim.diagnostic.jump({ count = 1, float = true })
+end, { desc = 'Go to next diagnostic' })
+
+-- Jump to the PREVIOUS diagnostic
+vim.keymap.set('n', '[d', function()
+    vim.diagnostic.jump({ count = -1, float = true })
+end, { desc = 'Go to previous diagnostic' })
+
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic list' })
+vim.keymap.set('n', '<ESC>', ':nohlsearch<CR>', { silent = true })
 
 -- Use an autocommand to only map these keys when an LSP actually attaches to a file
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -199,6 +212,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 require('mini.basics').setup()
 require('mini.surround').setup()
+require('mini.pairs').setup()
 require('which-key').setup()
 
 -- Using vim.pack

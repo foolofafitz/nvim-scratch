@@ -22,7 +22,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Native Omni-Completion tweaks
-vim.opt.complete = ".,o"                         -- Use buffer and omnifunc
+vim.opt.complete = ".,o"                                 -- Use buffer and omnifunc
 vim.opt.completeopt = { "fuzzy", "menuone", "noselect" } -- Smooth completion UI
 vim.opt.autocomplete = true
 vim.opt.pumheight = 7
@@ -180,8 +180,8 @@ vim.keymap.set('n', 'L', ':BufferLineCycleNext<CR>', { silent = true, desc = 'Ne
 
 -- Telescope mappings
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader> ', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Telescope grep word' })
 
 -- Tool Toggles
@@ -189,8 +189,10 @@ vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { silent = true, desc = 
 vim.keymap.set('n', '<leader>gg', ':LazyGit<CR>', { silent = true, desc = 'Open LazyGit' })
 
 -- Global LSP Diagnostics
-vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = 'Go to next diagnostic' })
-vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = 'Go to previous diagnostic' })
+vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end,
+    { desc = 'Go to next diagnostic' })
+vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end,
+    { desc = 'Go to previous diagnostic' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic list' })
 
 

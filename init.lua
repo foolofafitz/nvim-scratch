@@ -59,6 +59,7 @@ vim.pack.add({
     "https://github.com/lewis6991/gitsigns.nvim",
     "https://github.com/nvim-mini/mini.nvim",
     "https://github.com/neovim/nvim-lspconfig",
+    "https://github.com/stevearc/conform.nvim",
 })
 
 
@@ -71,6 +72,7 @@ require('onedark').setup({ style = 'darker' })
 require('onedark').load()
 
 -- Mini Plugins & Extras
+require('mini.ai').setup()
 require('mini.basics').setup()
 require('mini.surround').setup()
 require('mini.pairs').setup()

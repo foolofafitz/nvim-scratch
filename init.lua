@@ -198,6 +198,8 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader> ', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Telescope grep word' })
+vim.keymap.set('n', '<leader>fr', ':Telescope oldfiles<CR>', { desc = 'Telescope recent files' })
+vim.keymap.set('n', '<leader>bb', ':Telescope buffers<CR>', { desc = 'Telescope buffers' })
 
 -- Tool Toggles
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { silent = true, desc = 'Toggle Neo-tree' })

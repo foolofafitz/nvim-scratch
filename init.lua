@@ -247,13 +247,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Format on Save
-local format_sync_grp = vim.api.nvim_create_augroup("FormatOnSave", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-    group = format_sync_grp,
-    pattern = "*",
-    callback = function()
-        vim.lsp.buf.format({ async = false })
-    end,
+require("conform").setup({
+    formatters_by_ft = {
+        sh = { "shfmt" },
+        bash = { "shfmt" },
+    },
+    format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_fallback = true,
+    },
 })
 
 -- Native Package Commands

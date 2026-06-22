@@ -1,6 +1,3 @@
--- Ensure your leader key is set (usually in init.lua)
-vim.g.mapleader = " "
-
 -- 1. Mini.Pairs Toggle
 local function toggle_pairs()
     vim.g.minipairs_disable = not vim.g.minipairs_disable

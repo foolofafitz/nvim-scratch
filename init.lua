@@ -177,6 +177,19 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to window right' })
 -- Buffer navigation
 vim.keymap.set('n', 'H', ':BufferLineCyclePrev<CR>', { silent = true, desc = 'Prev buffer' })
 vim.keymap.set('n', 'L', ':BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<leader>bd', ':bn|bd#<CR>', { silent = true, desc = 'Delete buffer' })
+vim.keymap.set("n", "<leader>bo", function()
+    local current_buf = vim.api.nvim_get_current_buf()
+    local bufs = vim.api.nvim_list_bufs()
+
+    for _, buf in ipairs(bufs) do
+        -- Only close listed buffers that are not the current one
+        if buf ~= current_buf and vim.bo[buf].buflisted then
+            -- force = false ensures it won't accidentally kill unsaved work
+            pcall(vim.api.nvim_buf_delete, buf, { force = false })
+        end
+    end
+end, { desc = "Close other buffers" })
 
 -- Telescope mappings
 local builtin = require('telescope.builtin')

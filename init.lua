@@ -2,13 +2,13 @@
 -- [[ 1. GLOBAL SETTINGS & LEADER ]]                                         --
 -- ========================================================================== --
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- Quality of life native settings
 vim.opt.number = true             -- Show line numbers
-vim.opt.mouse = "a"               -- Enable mouse support
-vim.opt.clipboard = "unnamedplus" -- Sync clipboard with OS
+vim.opt.mouse = 'a'               -- Enable mouse support
+vim.opt.clipboard = 'unnamedplus' -- Sync clipboard with OS
 vim.opt.termguicolors = true
 
 -- Tabs & Indentation
@@ -22,8 +22,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Native Omni-Completion tweaks
-vim.opt.complete = ".,o"                                 -- Use buffer and omnifunc
-vim.opt.completeopt = { "fuzzy", "menuone", "noselect" } -- Smooth completion UI
+vim.opt.complete = '.,o'                                 -- Use buffer and omnifunc
+vim.opt.completeopt = { 'fuzzy', 'menuone', 'noselect' } -- Smooth completion UI
 vim.opt.autocomplete = true
 vim.opt.pumheight = 7
 
@@ -37,29 +37,36 @@ vim.g.nvim_tree_respect_buf_cwd = 1
 
 vim.pack.add({
     -- Core dependencies
-    "https://github.com/nvim-lua/plenary.nvim",
-    "https://github.com/MunifTanjim/nui.nvim",
-    "https://github.com/nvim-tree/nvim-web-devicons",
+    'https://github.com/nvim-lua/plenary.nvim',
+    'https://github.com/MunifTanjim/nui.nvim',
+    'https://github.com/nvim-tree/nvim-web-devicons',
 
     -- UI / Aesthetics
-    "https://github.com/navarasu/onedark.nvim",
-    "https://github.com/akinsho/bufferline.nvim",
-    "https://github.com/folke/which-key.nvim",
+    'https://github.com/navarasu/onedark.nvim',
+    'https://github.com/akinsho/bufferline.nvim',
+    'https://github.com/folke/which-key.nvim',
+    'https://github.com/nvim-lualine/lualine.nvim',
 
     -- Utilities & Navigation
     {
         src = 'https://github.com/nvim-neo-tree/neo-tree.nvim',
         version = vim.version.range('3')
     },
-    "https://github.com/nvim-telescope/telescope.nvim",
-    "https://github.com/nvim-telescope/telescope-fzf-native.nvim",
-    "https://github.com/kdheepak/lazygit.nvim",
+    'https://github.com/nvim-telescope/telescope.nvim',
+    'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
+    'https://github.com/kdheepak/lazygit.nvim',
 
     -- Git & Coding helpers
-    "https://github.com/lewis6991/gitsigns.nvim",
-    "https://github.com/nvim-mini/mini.nvim",
-    "https://github.com/neovim/nvim-lspconfig",
-    "https://github.com/stevearc/conform.nvim",
+    'https://github.com/lewis6991/gitsigns.nvim',
+    'https://github.com/nvim-mini/mini.nvim',
+    'https://github.com/neovim/nvim-lspconfig',
+    'https://github.com/stevearc/conform.nvim',
+
+    -- Markdown
+    {
+        src = 'https://github.com/YousefHadder/markdown-plus.nvim',
+        ft = 'markdown',
+    }
 })
 
 
@@ -86,16 +93,21 @@ require('mini.icons').setup()
 require('which-key').setup()
 
 -- Bufferline
-require("bufferline").setup({
+require('bufferline').setup({
     options = {
-        mode = "buffers",
-        separator_style = "thin",
+        mode = 'buffers',
+        separator_style = 'thin',
         always_show_bufferline = true,
     }
 })
 
+require('lualine').setup()
+
 -- MQL
-require("mql")
+require('mql')
+
+-- Markdown
+require('markdown-plus').setup()
 
 
 -- ====================================================================
@@ -152,12 +164,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.lsp.completion.enable(true, ev.data.client_id, ev.buf, {
             convert = function(item)
                 local abbr = item.label
-                abbr = abbr:gsub("%b()", ""):gsub("%b{}", "")
-                abbr = abbr:match("[%w_.]+.*") or abbr
-                abbr = #abbr > 15 and abbr:sub(1, 14) .. "…" or abbr
+                abbr = abbr:gsub('%b()', ''):gsub('%b{}', '')
+                abbr = abbr:match('[%w_.]+.*') or abbr
+                abbr = #abbr > 15 and abbr:sub(1, 14) .. '…' or abbr
 
-                local menu = item.detail or ""
-                menu = #menu > 15 and menu:sub(1, 14) .. "…" or menu
+                local menu = item.detail or ''
+                menu = #menu > 15 and menu:sub(1, 14) .. '…' or menu
 
                 return { abbr = abbr, menu = menu }
             end,
@@ -166,10 +178,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Format on Save
-require("conform").setup({
+require('conform').setup({
     formatters_by_ft = {
-        sh = { "shfmt" },
-        bash = { "shfmt" },
+        sh = { 'shfmt' },
+        bash = { 'shfmt' },
     },
     format_on_save = {
         -- These options will be passed to conform.format()
@@ -182,17 +194,17 @@ require("conform").setup({
 vim.api.nvim_create_user_command('PackUpdate', function() vim.pack.update() end, {})
 
 -- Clean Config Hot-Reload
-vim.keymap.set("n", "<leader>r", function()
-    if pcall(require, "neo-tree") then
-        vim.cmd("Neotree close")
+vim.keymap.set('n', '<leader>r', function()
+    if pcall(require, 'neo-tree') then
+        vim.cmd('Neotree close')
     end
 
     for name, _ in pairs(package.loaded) do
-        if name:match("^neo%-tree") or name:match("^user") then
+        if name:match('^neo%-tree') or name:match('^user') then
             package.loaded[name] = nil
         end
     end
 
     dofile(vim.env.MYVIMRC)
-    print("Config reloaded cleanly!")
-end, { desc = "Reload configuration" })
+    print('Config reloaded cleanly!')
+end, { desc = 'Reload configuration' })

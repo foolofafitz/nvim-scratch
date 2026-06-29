@@ -44,6 +44,7 @@ local function compile_mql5()
                 vim.notify("MQL5 Compilation Successful!", vim.log.levels.INFO)
                 -- Clean up the log file on success so it doesn't clutter your workspace
                 if vim.fn.filereadable(log_file) == 1 then os.remove(log_file) end
+                vim.cmd [[ cclose ]]
             else
                 vim.notify("Compilation Failed! Loading errors...", vim.log.levels.ERROR)
 
@@ -98,12 +99,21 @@ end
 -- Bind it to a key of your choice
 vim.keymap.set("n", "<leader>mc", compile_mql5, { desc = "Compile current MQL5 file via Wine" })
 
--- Automatically map 'l' to accept/open errors when inside a quickfix window
+-- Safely map 'l' to open errors ONLY in a true quickfix window
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "qf",
-    callback = function()
+    callback = function(args)
+        -- Get the current buffer name
+        local buf_name = vim.api.nvim_buf_get_name(args.buf)
+
+        -- If it's a Neo-Tree buffer acting like a quickfix container, skip it entirely
+        if buf_name:match("neo%-tree") then
+            return
+        end
+
+        -- Strictly map it only to this specific quickfix buffer
         vim.keymap.set("n", "l", "<CR>", {
-            buffer = true,
+            buffer = args.buf, -- Explicitly tie it to the validated buffer ID passed by the autocmd
             remap = true,
             desc = "Open quickfix entry under cursor"
         })

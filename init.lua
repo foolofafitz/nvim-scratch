@@ -73,14 +73,16 @@ require('plugins.neotree')
 require('plugins.telescope')
 
 -- Theme Setup
-require('onedark').setup({ style = 'darker' })
-require('onedark').load()
+-- require('onedark').setup({ style = 'warmer' })
+-- require('onedark').load()
+vim.cmd [[colorscheme retrobox]]
 
 -- Mini Plugins & Extras
 require('mini.ai').setup()
 require('mini.basics').setup()
 require('mini.surround').setup()
 require('mini.pairs').setup()
+require('mini.icons').setup()
 require('which-key').setup()
 
 -- Bufferline
@@ -92,32 +94,43 @@ require("bufferline").setup({
     }
 })
 
+-- MQL
+require("mql")
 
--- ========================================================================== --
--- [[ 4. LANGUAGE SERVER SETUP (LSP) ]]                                      --
--- ========================================================================== --
 
--- 1. Grab default configurations
-local zls_config = vim.lsp.config.zls
-local lua_config = vim.lsp.config.lua_ls
-local bash_config = vim.lsp.config.bashls
+-- ====================================================================
+-- Native Neovim 0.11+ LSP Configuration
+-- ====================================================================
 
--- 2. Tailor settings
-lua_config.settings = {
+-- 1. Safely fetch default templates from nvim-lspconfig
+-- (We use the internal configs table to bypass those giant deprecated warnings)
+local configs            = require('lspconfig.configs')
+local zls_config         = configs.zls and configs.zls.default_config or {}
+local lua_config         = configs.lua_ls and configs.lua_ls.default_config or {}
+local bash_config        = configs.bashls and configs.bashls.default_config or {}
+
+-- 2. Inject native root_markers
+-- (Crucial for starting 'nvim .' from a root dir so it matches your project)
+zls_config.root_markers  = { 'build.zig', 'zls.json', '.git' }
+bash_config.root_markers = { '.git' }
+
+-- 3. Tailor your settings
+lua_config.root_markers  = { '.luarc.json', '.git' }
+lua_config.settings      = {
     Lua = {
         diagnostics = { globals = { 'vim' } },
     },
 }
 
--- 3. Register and enable natively
+-- 4. Formally register them to the native Neovim system
 vim.lsp.config('zls', zls_config)
 vim.lsp.config('lua_ls', lua_config)
 vim.lsp.config('bashls', bash_config)
 
+-- 5. Globally enable them for automatic attachment
 vim.lsp.enable('zls')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('bashls')
-
 
 -- ========================================================================== --
 -- [[ 6. AUTOCOMMANDS & USER COMMANDS ]]                                     --

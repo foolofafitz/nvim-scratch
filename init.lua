@@ -66,7 +66,7 @@ vim.pack.add({
     {
         src = 'https://github.com/YousefHadder/markdown-plus.nvim',
         ft = 'markdown',
-    }
+    },
 })
 
 
@@ -101,13 +101,19 @@ require('bufferline').setup({
     }
 })
 
+-- lualine
 require('lualine').setup()
 
--- MQL
-require('mql')
+vim.g.mkdp_filetypes = { "markdown" }
+vim.cmd("packadd! markdown-preview.nvim")
 
--- Markdown
-require('markdown-plus').setup()
+-- 1. Tell Neovim to look inside your local project folder
+vim.opt.rtp:append("~/projects/mql.nvim")
+
+-- 2. Call your setup function
+require('mql').setup({
+    metaeditor_path = '~/22421/MetaEditor64.exe',
+})
 
 
 -- ====================================================================

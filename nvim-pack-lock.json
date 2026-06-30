@@ -32,6 +32,10 @@
       "rev": "003f5a83de9dad0c6a5a86c375745cb359e60d3a",
       "src": "https://github.com/YousefHadder/markdown-plus.nvim"
     },
+    "markdown-preview.nvim": {
+      "rev": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee",
+      "src": "https://github.com/iamcco/markdown-preview.nvim"
+    },
     "mini.nvim": {
       "rev": "1599a473aa6f5290a5d740b1144846e6f0c3963d",
       "src": "https://github.com/nvim-mini/mini.nvim"
